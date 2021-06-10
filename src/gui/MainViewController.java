@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.services.DepartmentService;
 import gui.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -60,7 +61,13 @@ public class MainViewController implements Initializable {
 			mainVBox.getChildren().clear();
 			mainVBox.getChildren().add(mainMenu);
 			mainVBox.getChildren().addAll(aboutVBox.getChildren());
-		
+			
+			if (absoluteName == "/gui/DepartmentList.fxml") {
+				DepartmentListController controller = loader.getController();
+				controller.setDepartmentService(new DepartmentService());
+				controller.updateTableView();
+			}
+			
 		}
 		catch (IOException e) {
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);

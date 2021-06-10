@@ -1,9 +1,13 @@
 package gui;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.services.DepartmentService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -18,6 +22,7 @@ public class DepartmentListController implements Initializable {
 	@Override
 	public void initialize(URL uri, ResourceBundle rb) {
 		initializeNodes();
+		
 	}
 
 	private void initializeNodes() {
@@ -29,6 +34,9 @@ public class DepartmentListController implements Initializable {
 		
 	}
 
+	private DepartmentService departmentService;
+	private ObservableList<Department> obsList;
+	
 	@FXML
 	private TableView<Department> tableViewDepartment;
 	
@@ -46,4 +54,17 @@ public class DepartmentListController implements Initializable {
 		System.out.println("onBtNewAction");
 	}
 	
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+	
+	public void updateTableView() {
+		if (departmentService == null) {
+			throw new IllegalStateException("Service was null");
+		}
+		
+		List<Department> lista = departmentService.findAll();
+		obsList = FXCollections.observableArrayList(lista);
+		tableViewDepartment.setItems(obsList);
+	}
 }
